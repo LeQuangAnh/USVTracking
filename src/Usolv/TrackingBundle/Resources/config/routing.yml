@@ -1,0 +1,11 @@
+_homepage:
+    path:     /
+    defaults: { _controller: UsolvTrackingBundle:Default:index }
+
+_secured:
+    resource: "@UsolvTrackingBundle/Controller/SecuredController.php"
+    type:     annotation
+
+_timerecord:
+    path:     /timerecord
+    defaults: { _controller: UsolvTrackingBundle:TimeRecord:init }
