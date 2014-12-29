@@ -1,0 +1,7 @@
+usolv_tracking:
+    resource: "@UsolvTrackingBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@UsolvTrackingBundle/Controller/"
+    type:     annotation
