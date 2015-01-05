@@ -9,3 +9,13 @@ _secured:
 _timerecord:
     path:     /timerecord
     defaults: { _controller: UsolvTrackingBundle:TimeRecord:init }
+
+_test_index:
+    path:     /test
+    defaults: { _controller: UsolvTrackingBundle:Test:index }
+    
+_test_ajax:
+    path:     /testajax
+    defaults: { _controller: UsolvTrackingBundle:Test:ajax }
+    requirements:
+        _method:  POST

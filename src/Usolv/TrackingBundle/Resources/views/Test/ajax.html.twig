@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% block head %}
+
+<!-- import the javascript -->
+<script src="/bundles/jquery/js/jquery-2.1.3.min.js"></script>
+<!-- script type="text/javascript">
+	$(document).ready(function() {
+
+	   //listen for the form beeing submitted
+	   $("#myForm").submit(function(){
+	      //get the url for the form
+	      var url=$("#myForm").attr("action");
+	   
+	      //start send the post request
+	       $.post(url,{
+	           formName:$("#name_id").val(),
+	           other:"attributes"
+	       },function(data){
+	           //the response is in the data variable
+	   
+	            if(data.responseCode==200 ){           
+	                $('#output').html(data.greeting);
+	                $('#output').css("color","red");
+	            }
+	           else if(data.responseCode==400){//bad request
+	               $('#output').html(data.greeting);
+	               $('#output').css("color","red");
+	           }
+	           else
+		       {
+	              //if we got to this point we know that the controller
+	              //did not return a json_encoded array. We can assume that           
+	              //an unexpected PHP error occured
+	              alert("An unexpeded error occured.");
+
+	              //if you want to print the error:
+	              $('#output').html(data);
+	           }
+	       });//It is silly. But you should not write 'json' or any thing as the fourth parameter. It should be undefined. I'll explain it futher down
+
+	      //we dont what the browser to submit the form
+	      return false;
+	   });
+
+
+	});
+</script -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+       //listen for the form beeing submitted
+       $('body').on('click','#submit',  function(){
+          //get the url for the form
+          
+          alert(myurl);
+       
+            $.ajax({
+                type: "POST",
+                url: Routing.generate('_test_ajax'),
+                data: $("#name_id").val(),
+                success: function(data){
+               //the response is in the data variable
+       
+                if(data.responseCode==200 ){           
+                    $('#output').html(data.greeting);
+                    $('#output').css("color","red");
+                }
+               else if(data.responseCode==400){//bad request
+                   $('#output').html(data.greeting);
+                   $('#output').css("color","red");
+               }
+               else
+               {
+                  //if we got to this point we know that the controller
+                  //did not return a json_encoded array. We can assume that           
+                  //an unexpected PHP error occured
+                  alert("An unexpeded error occured.");
+
+                  //if you want to print the error:
+                  $('#output').html(data);
+               }
+           });
+       });
+
+
+    });
+</script>
+
+  {% endblock %}
+
+  {% block body %}
+
+<div id="content">
+<form id="myForm">
+Write your name here:
+<input type="text" name="name" id="name_id" value="" /><br />
+<input type="submit" value="Send" />
+</form>
+</div>
+<div id="output"></div>
+
+  {% endblock %}
