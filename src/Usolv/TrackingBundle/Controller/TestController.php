@@ -10,13 +10,26 @@ class TestController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('UsolvTrackingBundle:Test:ajax.html.twig');
+        return $this->render('UsolvTrackingBundle:Test:jqgrid.html.twig');
+    }
+    
+    public function jqGridAction(Request $request)
+    {
+    	$rows = [];
+    	$i=0;
+    	while($i<=3) {
+    		$responce->rows[$i]['id']=$row['userId'];
+    		$responce->rows[$i]['cell']=array("ID:1" ,"Name:1","First:1","Last:1");
+    		$i++;
+    	}
+    	
+    	return new Response(json_encode($responce),200,array('Content-Type'=>'application/json'));
     }
     
     public function ajaxAction(Request $request)
     {
         //$request = $this->get('request');
-   		$name = $request->get('name');
+   		$name = $request->get('formName');
    
    		//if the user has written his name
    		if($name!="")
