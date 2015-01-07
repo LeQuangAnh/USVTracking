@@ -4,7 +4,7 @@ _controller:
 
 _homepage:
     path:     /
-    defaults: { _controller: UsolvTrackingBundle:Default:index }
+    defaults: { _controller: UsolvTrackingBundle:Schedule:init }
 
 _secured:
     resource: "@UsolvTrackingBundle/Controller/SecuredController.php"

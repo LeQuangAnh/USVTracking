@@ -11,8 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
-use Usolv\TrackingBundle\Form\Model\Schedule;
-use Usolv\TrackingBundle\Form\Type\ScheduleType;
+use Usolv\TrackingBundle\Form\Model\ScheduleSearch;
+use Usolv\TrackingBundle\Form\Type\ScheduleSearchType;
 
 /**
  * @Route("/schedule")
@@ -24,59 +24,52 @@ class ScheduleController extends Controller
 	 */
 	public function initAction(Request $request)
 	{
-		$schedule = new Schedule();
-		//$tasks = null;
+		$scheduleSearch = new ScheduleSearch();
 		
-		$form = $this->createForm(new ScheduleType(), $schedule, array(
+		$form = $this->createForm(new ScheduleSearchType(), $scheduleSearch, array(
 				'action' => $this->generateUrl('_schedule-search'),
+				'method' => 'POST',
 		));
 			
 		return $this->render('UsolvTrackingBundle:Schedule:search.html.twig', array(
 			'form' => $form->createView(),
-			//'tasks' => $tasks,
 		));
 	}
 	
 	/**
 	 * @Route("/search", name="_schedule-search")
+	 * @Method("POST")	 
 	 */
 	public function searchAction(Request $request)
-	{   		
-   		$em = $this->getDoctrine()->getManager();
-   		$tasks = $em->getRepository('UsolvTrackingBundle:Task')
-   		->findAllByProject('M14_NGIT_SLD_Jul_Tracking1');
-
-	   	//make sure it has the correct content type
-   		return new Response(
-   				json_encode($tasks),
-   				Response::HTTP_OK,
-   				array('Content-Type'=>'application/json'));   
-	}
-	
-	/*
-	 * @Route("/search", name="_schedule-search")
-	 * @Method({"POST"})
-	 *
-	public function searchAction(Request $request)
 	{
-		$schedule = new Schedule();
-		$tasks = null;
-		$response = null;
-	
-		$form = $this->createForm(new ScheduleType(), $schedule);
-	
-		$form->handleRequest($request);
-	
-		if ($form->isSubmitted() && $form->isValid())
-		{
-			$em = $this->getDoctrine()->getManager();
-			$tasks = $em->getRepository('UsolvTrackingBundle:Task')
-			->findAllByProject($schedule->getProject()->getName());
-			$response = new Response(json_encode($tasks), Response::HTTP_OK);
-			$response->headers->set('Content-Type', 'application/json');
-				
-		}
-	
-		return $response;
-	}*/
+			$project = $request->get('project');
+			
+   		$repository = $this->getDoctrine()->getRepository('UsolvTrackingBundle:Task');
+   		$query = $repository->createQueryBuilder('t')
+   			->where('t.project_name = :project_name')
+   			->setParameter('project_name', $project)
+   			->getQuery();
+   		
+   		$tasks = $query->getResult();
+
+   		$rows = [];
+   		$i = 0;
+   		foreach ($tasks as $task)
+   		{
+   			$responce->rows[$i]['id'] = $task->getId();
+   			$responce->rows[$i]['cell'] = array(
+   					$task->getModule()->getName(), 
+   					$task->getWbs()->getName(),
+   					date_format($task->getPlanstart(), 'Y-m-d'),
+   					date_format($task->getPlanfinish(), 'Y-m-d'),
+   					$task->getPlancost(),
+   			);
+   			$i++;
+   		}
+   		 
+   		return new Response(
+   				json_encode($responce),
+   				Response::HTTP_OK,
+   				array('Content-Type'=>'application/json'));
+	}
 }

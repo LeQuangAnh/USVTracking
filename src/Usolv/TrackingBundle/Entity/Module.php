@@ -3,6 +3,7 @@
 namespace Usolv\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Usolv\TrackingBundle\Entity\Project;
 
 /**
  * @ORM\Entity
@@ -11,21 +12,27 @@ use Doctrine\ORM\Mapping as ORM;
 class Module
 {
 	/**
-	 * @ORM\Column(type="string", length=100)
+	 * @ORM\Column(type="integer")
 	 * @ORM\Id
-	 */
-	protected $project_name;
-
-	/**
-	 * @ORM\Column(type="string", length=30)
-	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
+	
+	/**
+	 * @ORM\Column(type="string", length=30)
+	 */
+	protected $code;
 
 	/**
 	 * @ORM\Column(type="string", length=200)
 	 */
 	protected $name;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Project", inversedBy="modules")
+	 * @ORM\JoinColumn(name="project_name", referencedColumnName="name")
+	 **/
+	protected $project;
 	
 	/**
 	 * @ORM\Column(type="string", length=50, nullable=true)
@@ -58,49 +65,36 @@ class Module
 	protected $delflag;
 
     /**
-     * Set project_name
-     *
-     * @param string $projectName
-     * @return Module
-     */
-    public function setProjectName($projectName)
-    {
-        $this->project_name = $projectName;
-
-        return $this;
-    }
-
-    /**
-     * Get project_name
-     *
-     * @return string 
-     */
-    public function getProjectName()
-    {
-        return $this->project_name;
-    }
-
-    /**
-     * Set id
-     *
-     * @param string $id
-     * @return Module
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * Get id
      *
-     * @return string 
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Module
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**
@@ -262,5 +256,28 @@ class Module
     public function getDelflag()
     {
         return $this->delflag;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Usolv\TrackingBundle\Entity\Project $project
+     * @return Module
+     */
+    public function setProject(\Usolv\TrackingBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Usolv\TrackingBundle\Entity\Project 
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

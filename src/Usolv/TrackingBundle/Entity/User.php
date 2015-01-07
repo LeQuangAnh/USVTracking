@@ -370,29 +370,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set id
-     *
-     * @param string $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return string 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Add projectroles
      *
      * @param \Usolv\TrackingBundle\Entity\ProjectRole $projectroles
@@ -423,39 +400,6 @@ class User implements AdvancedUserInterface, \Serializable
     public function getProjectroles()
     {
         return $this->projectroles;
-    }
-
-    /**
-     * Add projects
-     *
-     * @param \Usolv\TrackingBundle\Entity\Project $projects
-     * @return User
-     */
-    public function addProject(\Usolv\TrackingBundle\Entity\Project $projects)
-    {
-        $this->projects[] = $projects;
-
-        return $this;
-    }
-
-    /**
-     * Remove projects
-     *
-     * @param \Usolv\TrackingBundle\Entity\Project $projects
-     */
-    public function removeProject(\Usolv\TrackingBundle\Entity\Project $projects)
-    {
-        $this->projects->removeElement($projects);
-    }
-
-    /**
-     * Get projects
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProjects()
-    {
-        return $this->projects;
     }
 
     /**

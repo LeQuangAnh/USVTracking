@@ -24,14 +24,16 @@ class Task
 	protected $project_name;
 	
 	/**
-	 * @ORM\Column(type="string", length=30)
-	 */
-	protected $module_id;
+	 * @ORM\ManyToOne(targetEntity="Module")
+	 * @ORM\JoinColumn(name="module_id", referencedColumnName="id")
+	 **/
+	protected $module;
 
 	/**
-	 * @ORM\Column(type="integer")
-	 */
-	protected $wbs_id;
+	 * @ORM\ManyToOne(targetEntity="Wbs")
+	 * @ORM\JoinColumn(name="wbs_id", referencedColumnName="id")
+	 **/
+	protected $wbs;
 	
 	/**
 	 * @ORM\Column(type="datetime")
@@ -102,49 +104,49 @@ class Task
     }
 
     /**
-     * Set module_id
+     * Set module
      *
-     * @param string $moduleId
+     * @param string $module
      * @return Task
      */
-    public function setModuleId($moduleId)
+    public function setModule($module)
     {
-        $this->module_id = $moduleId;
+        $this->module = $module;
 
         return $this;
     }
 
     /**
-     * Get module_id
+     * Get module
      *
      * @return string 
      */
-    public function getModuleId()
+    public function getModule()
     {
-        return $this->module_id;
+        return $this->module;
     }
 
     /**
-     * Set wbs_id
+     * Set wbs
      *
-     * @param integer $wbsId
+     * @param string $wbs
      * @return Task
      */
-    public function setWbsId($wbsId)
+    public function setWbs($wbs)
     {
-        $this->wbs_id = $wbsId;
+        $this->wbs = $wbs;
 
         return $this;
     }
 
     /**
-     * Get wbs_id
+     * Get wbs
      *
-     * @return integer 
+     * @return string 
      */
-    public function getWbsId()
+    public function getWbs()
     {
-        return $this->wbs_id;
+        return $this->wbs;
     }
 
     /**

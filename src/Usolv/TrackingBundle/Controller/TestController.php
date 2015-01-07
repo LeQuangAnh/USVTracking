@@ -18,8 +18,8 @@ class TestController extends Controller
     	$rows = [];
     	$i=0;
     	while($i<=3) {
-    		$responce->rows[$i]['id']=$row['userId'];
-    		$responce->rows[$i]['cell']=array("ID:1" ,"Name:1","First:1","Last:1");
+    		$responce->rows[$i]['id']=$i;
+    		$responce->rows[$i]['cell']=array("ID:".$i ,"Name:".$i,"First:".$i,"Last:".$i);
     		$i++;
     	}
     	

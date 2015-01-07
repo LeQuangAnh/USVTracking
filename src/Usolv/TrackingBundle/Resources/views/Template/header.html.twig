@@ -12,11 +12,11 @@
           </button>
           <a class="navbar-brand" href="#">UVTrackingTool</a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="collapse navbar-collapse" ng-controller="HeaderController">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Time Record</a></li>
-            <li><a href="{{ path('_schedule') }}">Schedule</a></li>
-            <li class="dropdown">
+            <li ng-class="{ active: isActive('/')}"><a href="index.html">Time Record</a></li>
+            <li ng-class="active"><a href="{{ path('_schedule') }}">Schedule</a></li>
+            <li ng-class="{ active: isActive('/report')}" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Report<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Report By User</a></li>
@@ -34,6 +34,7 @@
             <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
           </ul -->
         </div>
+        <div ng-view></div>
         <!--/.nav-collapse -->
       </div>
     </nav>

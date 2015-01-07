@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity
  * @ORM\Table(name="role")
- * @ORM\Entity()
  */
 class Role implements RoleInterface
 {
@@ -42,39 +42,6 @@ class Role implements RoleInterface
 	}
 
     /**
-     * Add users
-     *
-     * @param \Usolv\DemoBundle\Entity\User $users
-     * @return Role
-     */
-    public function addUser(\Usolv\DemoBundle\Entity\User $users)
-    {
-        $this->users[] = $users;
-
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Usolv\DemoBundle\Entity\User $users
-     */
-    public function removeUser(\Usolv\DemoBundle\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -105,5 +72,38 @@ class Role implements RoleInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \Usolv\TrackingBundle\Entity\User $users
+     * @return Role
+     */
+    public function addUser(\Usolv\TrackingBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Usolv\TrackingBundle\Entity\User $users
+     */
+    public function removeUser(\Usolv\TrackingBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

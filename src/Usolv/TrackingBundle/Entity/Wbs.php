@@ -16,16 +16,17 @@ class Wbs
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
-	
-	/**
-	 * @ORM\Column(type="string", length=100)
-	 */
-	protected $project_name;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 */
 	protected $name;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Project", inversedBy="wbss")
+	 * @ORM\JoinColumn(name="project_name", referencedColumnName="name")
+	 **/
+	protected $project;
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -58,16 +59,6 @@ class Wbs
         $this->project_name = $projectName;
 
         return $this;
-    }
-
-    /**
-     * Get project_name
-     *
-     * @return string 
-     */
-    public function getProjectName()
-    {
-        return $this->project_name;
     }
 
     /**
@@ -137,5 +128,28 @@ class Wbs
     public function getDelflag()
     {
         return $this->delflag;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Usolv\TrackingBundle\Entity\Project $project
+     * @return Wbs
+     */
+    public function setProject(\Usolv\TrackingBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Usolv\TrackingBundle\Entity\Project 
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }
