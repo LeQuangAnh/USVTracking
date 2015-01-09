@@ -15,7 +15,7 @@ class TestController extends Controller
     
     public function jqGridAction(Request $request)
     {
-    	$rows = [];
+    	//$rows = [];
     	$i=0;
     	while($i<=3) {
     		$responce->rows[$i]['id']=$i;

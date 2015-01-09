@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="wbs")
+ * @ORM\Entity(repositoryClass="Usolv\TrackingBundle\Entity\WbsRepository")
  */
 class Wbs
 {
