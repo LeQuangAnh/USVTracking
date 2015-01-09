@@ -12,26 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class WbsRepository extends EntityRepository
 {
-	public function findByProjectAutoOrdered($projectname)
-	{
-	  $query = $this->getEntityManager()
-	    ->getRepository('UsolvTrackingBundle:Wbs')
+  public function findByProjectAutoOrdered($projectname)
+  {
+    $query = $this->getEntityManager()
+      ->getRepository('UsolvTrackingBundle:Wbs')
       ->createQueryBuilder('w')
       ->where('w.project = :project_name')
       ->setParameter('project_name', $projectname)
       ->orderBy('w.order', 'ASC')
-      ->getQuery();
-	
-	  try {
-	    $wbsList = $query->getArrayResult();
-	  } catch (NoResultException $e) {
-	    $message = sprintf(
-	        'Unable to find an active UsolvTrackingBundle:Wbs object identified by "%s".',
-	        $projectname
-	    );
-	    throw new NoResultException($message, 0, $e);
-	  }
-	
-	  return $wbsList;
-	}
+    ->getQuery();
+    
+    try
+    {
+      $wbsList = $query->getArrayResult();
+    }
+    catch(NoResultException $e)
+    {
+      $message = sprintf(
+          'Unable to find an active UsolvTrackingBundle:Wbs object identified by "%s".', 
+          $projectname);
+      throw new NoResultException($message, 0, $e);
+    }
+    
+    return $wbsList;
+  }
 }
