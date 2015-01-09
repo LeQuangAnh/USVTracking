@@ -66,9 +66,14 @@ class ScheduleController extends Controller
 	 * @Route("/test", name="_schedule-test")
 	 */
 		
+	/*
+	 * Get Data to fill in Schedule Grid 
+	 */
 	private function GetGridData($projectName)
 	{		
 		$prevModule = '';
+		$prevWbs = '';
+		$prevResourceIdx = 0;
 		$rows = [];
 		$rowIdx = 0;
 		$cellIdx = 0;
@@ -99,9 +104,24 @@ class ScheduleController extends Controller
 		    $cellTemp[$cellIdx++] = $task['module_name'];
 		  }
 		  
-		  $cellTemp[$cellIdx++] = ($task['planstart'] <> null) ? date_format($task['planstart'], 'Y-m-d') : '{Undefined}';
-		  $cellTemp[$cellIdx++] = ($task['planfinish'] <> null) ? date_format($task['planfinish'], 'Y-m-d') : '{Undefined}';
-		  $cellTemp[$cellIdx++] = ($task['plancost'] <> null) ? $task['plancost'] : '{Undefined}';
+		  // In case 2 resources assign to one task
+		  if ($task['wbs_name'] == $prevWbs)
+		  {
+		  	$cellTemp[$prevResourceIdx] = $cellTemp[$prevResourceIdx].', '.$task['planresource'];
+		  }
+		  else
+		  {
+		  	$prevResourceIdx = $cellIdx;
+		  	$cellTemp[$cellIdx++] = ($task['plancost'] <> null) ? $task['planresource'] : '{Undefined}';
+		  	$cellTemp[$cellIdx++] = ($task['planstart'] <> null) ? date_format($task['planstart'], 'Y-m-d') : '{Undefined}';
+		  	$cellTemp[$cellIdx++] = ($task['planfinish'] <> null) ? date_format($task['planfinish'], 'Y-m-d') : '{Undefined}';
+		  	$cellTemp[$cellIdx++] = ($task['plancost'] <> null) ? $task['plancost'] : '{Undefined}';
+		  	$cellTemp[$cellIdx++] = '{NoData}';
+		  	$cellTemp[$cellIdx++] = '{NoData}';
+		  	$cellTemp[$cellIdx++] = '{NoData}';
+		  }
+		  $prevWbs = $task['wbs_name'];
+		  
 		}
 		
 		// Store last row
@@ -120,42 +140,78 @@ class ScheduleController extends Controller
 		// Get Column Name, Model, Group Header
 		$i = 0;
 		$j = 0;
-		$colInfo->colNames[$i] = 'Module Code';
+		$colInfo->colNames[$i] = 'Module';
 		$colInfo->colModel[$i++] = array(
 				'name' => 'module_code',
 				'align' => 'center',
-				'width' => '100',
-				'frozen' => true);
-		$colInfo->colNames[$i] = 'Module Name';
+				'width' => 100,
+				'frozen' => true
+		);
+		$colInfo->colNames[$i] = 'Name';
 		$colInfo->colModel[$i++] = array(
 				'name' => 'module_name', 
 				'align' => 'center', 
-				'width' => '200', 
-				'frozen' => true);
+				'width' => 200, 
+				'frozen' => true		
+		);
 		
 		foreach ($wbsList as $wbs)
 		{
-			$wsbname = str_replace(' ', '', strtolower($wbs['name'])).'_planstart';			
+			$wsbname = str_replace(' ', '', strtolower($wbs['name']));			
 			$colInfo->groupHeaders[$j++] = array(
-					'startColumnName' => $wsbname.'_planstart',
-					'numberOfColumns' => 3,
+					'startColumnName' => $wsbname.'_planresource',
+					'numberOfColumns' => 7,
 					'titleText' => $wbs['name']
+			);
+			$colInfo->colNames[$i] = 'Plan Resource';
+			$colInfo->colModel[$i++] = array(
+			    'name' => $wsbname.'_planresource',
+			    'align' => 'center',
+			    'width' => 100,
+				  'resizable' => false
 			);
 		  $colInfo->colNames[$i] = 'Plan Start';
 		  $colInfo->colModel[$i++] = array(
 		  		'name' => $wsbname.'_planstart', 
 		  		'align' => 'center', 
-		  		'width' => '100');
+		  		'width' => 80,
+		  		'resizable' => false
+		  );
 		  $colInfo->colNames[$i] = 'Plan Finish';
 		  $colInfo->colModel[$i++] = array(
 		  		'name' => $wsbname.'_planfinish', 
 		  		'align' => 'center', 
-		  		'width' => '100');
+		  		'width' => 80,
+		  		'resizable' => false
+		  );
 		  $colInfo->colNames[$i] = 'Plan Cost';
 		  $colInfo->colModel[$i++] = array(
 		  		'name' => $wsbname.'_plancost', 
 		  		'align' => 'center', 
-		  		'width' => '100');
+		  		'width' => 80,
+		  		'resizable' => false
+		  );
+		  $colInfo->colNames[$i] = 'Actual Start';
+		  $colInfo->colModel[$i++] = array(
+		      'name' => $wsbname.'_actualstart',
+		      'align' => 'center',
+		      'width' => 80,
+		  		'resizable' => false
+		  );
+		  $colInfo->colNames[$i] = 'Actual Finish';
+		  $colInfo->colModel[$i++] = array(
+		      'name' => $wsbname.'_actualfinish',
+		      'align' => 'center',
+		      'width' => 80,
+		  		'resizable' => false
+		  );
+		  $colInfo->colNames[$i] = 'Actual Cost';
+		  $colInfo->colModel[$i++] = array(
+		      'name' => $wsbname.'_actualcost',
+		      'align' => 'center',
+		      'width' => 80,
+		  		'resizable' => false
+		  );
 		}
 		
 		return $colInfo;

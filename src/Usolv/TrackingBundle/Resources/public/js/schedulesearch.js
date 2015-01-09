@@ -37,7 +37,7 @@ $(document).ready(function () {
             viewrecords: true,
             gridview: true,
             height: 'auto',
-            width: 800,
+            width: 1000,
             shrinkToFit: false,
             caption: $("#schedulesearchtype_project").val()
           })
